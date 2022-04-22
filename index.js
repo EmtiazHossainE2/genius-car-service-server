@@ -42,11 +42,19 @@ async function run() {
         })
 
         //10 POST  (post means add data ) insert a doc  [client site ==> AddService 8]
-        // https://www.mongodb.com/docs/drivers/node/current/usage-examples/insertOne/  
-        
+        // https://www.mongodb.com/docs/drivers/node/current/usage-examples/insertOne/ 
         app.post('/service' , async(req,res) => {
             const service = req.body 
             const result = await serviceCollection.insertOne(service)
+            res.send(result)
+        })
+
+        //11 delete      (specific on item )
+        // https://www.mongodb.com/docs/drivers/node/current/usage-examples/deleteOne/
+        app.delete('/service/:id' , async(req,res) => {
+            const id = req.params.id 
+            const query = {_id: ObjectId(id)}
+            const result = await serviceCollection.deleteOne(query)
             res.send(result)
         })
 
