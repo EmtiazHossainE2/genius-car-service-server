@@ -25,7 +25,8 @@ async function run() {
         //7
         await client.connect();
         const serviceCollection = client.db("geniusCar").collection("service");
-        //8 Find Multiple
+
+        //8 Find Multiple (get means load data)
         app.get('/service', async (req, res) => {
             const query = {}
             const cursor = serviceCollection.find(query)
@@ -38,6 +39,15 @@ async function run() {
             const query = { _id: ObjectId(id) }
             const service = await serviceCollection.findOne(query)
             res.send(service)
+        })
+
+        //10 POST  (post means add data ) insert a doc  [client site ==> AddService 8]
+        // https://www.mongodb.com/docs/drivers/node/current/usage-examples/insertOne/  
+        
+        app.post('/service' , async(req,res) => {
+            const service = req.body 
+            const result = await serviceCollection.insertOne(service)
+            res.send(result)
         })
 
 
