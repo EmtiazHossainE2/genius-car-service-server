@@ -25,6 +25,7 @@ async function run() {
         //7
         await client.connect();
         const serviceCollection = client.db("geniusCar").collection("service");
+        const orderCollection = client.db("geniusCar").collection("order");
 
         //8 Find Multiple (get means load data)
         app.get('/service', async (req, res) => {
@@ -58,8 +59,23 @@ async function run() {
             res.send(result)
         })
 
+        //order collection api 
 
+        //load orders
+        app.get('/order' , async(req,res) => {
+            const email = req.query.email
+            const query = {email : email} 
+            const cursor = orderCollection.find(query)
+            const orders = await cursor.toArray()
+            res.send(orders)
+        })
 
+        // get orders
+        app.post('/order' , async(req,res) => {
+            const order = req.body 
+            const result = await orderCollection.insertOne(order)
+            res.send(result)
+        })
 
 
     }
