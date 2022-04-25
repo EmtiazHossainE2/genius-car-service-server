@@ -5,6 +5,7 @@ const port = process.env.PORT || 5000
 //3
 const cors = require('cors');
 require('dotenv').config()
+const jwt = require('jsonwebtoken');
 
 //5^1 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -75,6 +76,13 @@ async function run() {
             const order = req.body 
             const result = await orderCollection.insertOne(order)
             res.send(result)
+        })
+
+        //auth (access token)
+        app.post('/login' , async(req,res) =>{
+            const user = req.body 
+            const accessToken = jwt.sign(user , process.env.ACCESS_TOKEN_SECRET , {expiresIn : '1d'})
+            res.send(accessToken)
         })
 
 
